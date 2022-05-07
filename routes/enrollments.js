@@ -21,7 +21,10 @@ const {
 	listByStudent,
 } = require('../controllers/enrollments');
 
-router.post('/new/:courseId/:userId', create);
+const { isAdmin } = require('../middlewares');
+
+
+router.post('/new/:courseId/:userId', isAdmin, create);
 router.get('/learn-list/:userId', listByStudent);
 router.get('/read/:courseId/:userId', findEnrollment, read);
 

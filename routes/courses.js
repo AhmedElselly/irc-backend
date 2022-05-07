@@ -14,13 +14,20 @@ const {
     getCourseImage
 } = require('../controllers/course');
 
-router.post('/create', upload.single('image'), create);
+const {
+    getUserById
+} = require('../controllers/users');
+
+const { isAdmin } = require('../middlewares');
+
+router.post('/create/:userId', isAdmin, upload.single('image'), create);
 router.get('/course/:courseId', getCourse);
 router.get('/course/:courseId/image', getCourseImage);
-router.put('/course/:courseId/update', upload.single('image'), courseUpdate);
-router.delete('/course/:courseId/remove', courseRemove);
+router.put('/course/:courseId/update/:userId', isAdmin, upload.single('image'), courseUpdate);
+router.delete('/course/:courseId/remove/:userId', isAdmin, courseRemove);
 router.get('/', courseIndex);
 
 router.param('courseId', getCourseById);
+router.param('userId', getUserById);
 
 module.exports = router;

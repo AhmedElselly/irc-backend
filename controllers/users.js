@@ -114,12 +114,18 @@ module.exports = {
 
         if(req.body.role === 'student'){
             user.student = true;
+            user.school = false;
+            user.admin = false;
         }
         if(req.body.role === 'school'){
             user.school = true;
+            user.student = false;
+            user.admin = false;
         }
         if(req.body.role === 'admin'){
             user.admin = true;
+            user.student = false;
+            user.school = false;
         }
 
         if(req.file){
@@ -132,7 +138,7 @@ module.exports = {
 
         user.save((err, user) => {
             if(err) return res.status(401).json({err});
-            return res.json(user);
+            return res.json({message: 'User updated successfully!'});
         });        
     },
 
@@ -143,7 +149,7 @@ module.exports = {
     },
 
     async updateUserStatus(req, res) {
-        const user = await User.findOneAndUpdate({'_id': req.user._id}, {status: req.body.status});
+        const user = await User.findOneAndUpdate({'_id': req.params.userId1}, {status: req.body.status});
        
         user.save((err, user) => {
             if(err) return res.status(401).json({err});
