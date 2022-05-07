@@ -27,7 +27,7 @@ module.exports = {
                 
         const {err, user} = await User.authenticate()(req.body.email, req.body.password);
         
-        if(err || !user) return res.status(501).json({error: 'email and password do not match!'});
+        if(err || !user) return res.status(400).json({error: 'email and password do not match!'});
         const {_id, email, username} = user;
         const token = await jwt.sign({_id, email, username}, process.env.SECRETKEY);
 
