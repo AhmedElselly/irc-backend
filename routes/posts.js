@@ -17,8 +17,11 @@ const {
     getUserById
 } = require('../controllers/users');
 
+const { isAuth } = require('../middlewares');
+
+
 router.post('/create', create);
-router.post('/create/image/:userId', upload.single('image'), createImage);
+router.post('/create/image/:userId', isAuth, upload.single('image'), createImage);
 router.get('/post/:userId/assignments', getStudentPosts);
 router.get('/image/:postId', getPostImage);
 router.get('/post/:postId', getPost);

@@ -53,7 +53,7 @@ module.exports = {
         console.log(post);
         post.save((err, post) => {
             if(err) return res.status(400).json({error: 'something went wrong'});
-            return res.json(post);
+            return res.json({message: 'Image sent successfully!'});
         })
     },
 
