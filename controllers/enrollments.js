@@ -31,7 +31,7 @@ module.exports = {
 
     async read(req, res){
 		const enrol = await Enrol.findOne({student: req.user._id})
-		.populate('student', '-password')
+		.populate('user', '-image')
 		.populate('course', '-image')
 		// enrol.course.image = undefined;
 		return res.json(enrol);
@@ -49,7 +49,15 @@ module.exports = {
 
     async listByStudent(req, res){
 		const enrol = await Enrol.find({'student': req.user._id})
-			.populate('student').populate('course', '-image');
+			.populate('course');
 		return res.json(enrol);
 	},
+
+	async removeEnrol(req, res){
+		const enrol = await req.enrol;
+		enrol.remove((err, enrol) => {
+			if(err) return res.status(400).json({err});
+			return res.json({message: 'Removed enrollment successfully'});
+		})
+	}
 }

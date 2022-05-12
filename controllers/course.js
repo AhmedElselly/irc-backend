@@ -49,10 +49,22 @@ module.exports = {
         const course = await req.course;
         console.log(req.body.programLanguage)
         console.log(req.body.programMode)
-        course.title = req.body.title;
+        course.name = req.body.name;
+        course.helpLink = req.body.helpLink;
+        course.learnMore = req.body.learnMore;
+        course.type = req.body.type;
+        course.manufactor = req.body.manufactor;
+        course.defaultBaudRate = req.body.defaultBaudRate;
         course.description = req.body.description;
-        course.bluetooth = req.body.bluetooth;
-        course.plugin = req.body.plugin;
+        course.bluetoothRequired = req.body.bluetoothRequired;
+        course.featured = req.body.featured;
+        course.disabled = req.body.disabled;
+        course.useAutoScan = req.body.useAutoScan;
+        course.serialPortalRequired = req.body.serialPortalRequired;
+        course.initialConnectionRequired = req.body.initialConnectionRequired;
+        course.launchPeripheralConnectionFlow = req.body.launchPeripheralConnectionFlow;
+        // course.plugin = req.body.plugin;
+
         course.programMode = req.body.programMode;
         course.programLanguage = req.body.programLanguage;
 

@@ -19,6 +19,7 @@ const {
 	getEnrollmentById,
 	read,
 	listByStudent,
+	removeEnrol,
 } = require('../controllers/enrollments');
 
 const { isAdmin } = require('../middlewares');
@@ -26,6 +27,7 @@ const { isAdmin } = require('../middlewares');
 
 router.post('/new/:courseId/:userId', isAdmin, create);
 router.get('/learn-list/:userId', listByStudent);
+router.delete('/remove/:userId/:enrolId', removeEnrol);
 router.get('/read/:courseId/:userId', findEnrollment, read);
 
 
