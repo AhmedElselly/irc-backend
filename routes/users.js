@@ -18,7 +18,7 @@ const {
     checkUserPurchase,
     foundUser
 } = require('../controllers/users');
-const { isAdmin, isAuth } = require('../middlewares');
+const { isAdmin, isAuth} = require('../middlewares');
 
 
 router.put('/student/:_id/edit/:userId',  isAdmin, upload.single('image'), updateStudent);

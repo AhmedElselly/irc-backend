@@ -25,7 +25,8 @@ const userSchema = new Schema({
     },
     
     schoolName: {
-        type: String,        
+        type: String,       
+        required: true
     },
     gender: {
         type: String

@@ -51,29 +51,35 @@ module.exports = {
 
     async addNewUser(req, res){
         console.log(req.body)
-      
-
-        const user = await new User(req.body);
-        if(req.body.role === 'student'){
-            user.student = true;
-        }
-        if(req.body.role === 'school'){
-            user.school = true;
-        }
-        if(req.body.role === 'admin'){
-            user.admin = true;
-        }
-        if(req.file) {
-            user.image.data = req.file.buffer;
-            user.image.contentType = req.file.mimetype;
-        }
-        await user.setPassword(req.body.password);
-        console.log('user', user)
-        user.save((err, user) => {
-            if(err) return res.status(400).json({err});
-            return res.json({message: 'User successfully added!'});
-        })
         
+        try{
+            const user = await new User(req.body);
+            if(req.body.role === 'student'){
+                user.student = true;
+            }
+            if(req.body.role === 'school'){
+                user.school = true;
+            }
+            if(req.body.role === 'admin'){
+                user.admin = true;
+            }
+            if(req.file) {
+                user.image.data = req.file.buffer;
+                user.image.contentType = req.file.mimetype;
+            }
+                await user.setPassword(req.body.password);
+           
+            
+            
+            console.log('user', user)
+            user.save((err, user) => {
+                if(err) return res.status(400).json({err});
+                return res.json({message: 'User successfully added!'});
+            })
+        } catch(err){
+            console.log(err)
+            return res.status(400).json({err: 'Something went wrong'})
+        }
     },
 
     async getUsers(req, res){
