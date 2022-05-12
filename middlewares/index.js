@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const {check} = require('express-validator');
+
 
 module.exports = {
     isAuth(req, res, next){
