@@ -161,5 +161,14 @@ module.exports = {
             if(err) return res.status(401).json({err});
             return res.json(user);
         });
+    },
+
+    async removeUser(req, res){
+        const user = await User.findById(req.params.userId1);
+        console.log('user to delete', user)
+        user.remove((err, user) => {
+            if(err) return res.status(400).json({err});
+            return res.json({message: 'User deleted!'});
+        })
     }
 }

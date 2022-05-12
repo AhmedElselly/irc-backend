@@ -16,7 +16,8 @@ const {
     getUserById,
     updateUserStatus,
     checkUserPurchase,
-    foundUser
+    foundUser,
+    removeUser
 } = require('../controllers/users');
 const { isAdmin, isAuth} = require('../middlewares');
 
@@ -30,6 +31,7 @@ router.get('/students', getStudents);
 router.get('/schools', getSchools);
 router.get('/statuses', getUserStatus);
 router.put('/statuses/:userId1/update/:userId',  isAdmin, updateUserStatus);
+router.delete('/statuses/:userId1/remove/:userId',  isAdmin, removeUser);
 router.get('/', getUsers);
 
 router.param('userId', getUserById);
