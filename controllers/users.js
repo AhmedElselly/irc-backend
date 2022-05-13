@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Post = require('../models/post');
 const jwt = require('jsonwebtoken');
 
 module.exports = {
@@ -165,12 +166,13 @@ module.exports = {
 
     async removeUser(req, res){
         const user = await User.findById(req.params.userId1);
-        console.log('user to delete', user)
-        const assignments = await Post.find({_id: req.params.userId1});
-        console.log('assignments', assignments)
+        // console.log('user to delete', user)
+        const posts = await Post.deleteMany({user: req.params.userId1});
+        // console.log('posts', posts)
+       
         user.remove((err, user) => {
             if(err) return res.status(400).json({err});
-            assignments.remove();
+            
             return res.json({message: 'User deleted!'});
         })
     }
