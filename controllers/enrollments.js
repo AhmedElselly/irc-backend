@@ -31,7 +31,7 @@ module.exports = {
 
     async read(req, res){
 		const enrol = await Enrol.findOne({student: req.user._id})
-		.populate('user', '-image')
+		.populate('student', '-image')
 		.populate('course', '-image')
 		// enrol.course.image = undefined;
 		return res.json(enrol);
