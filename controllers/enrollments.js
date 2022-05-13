@@ -4,7 +4,7 @@ const User = require('../models/user');
 module.exports = {
     getEnrollmentById(req, res, next, id){
 		Enrol.findById(id)
-		.populate('student', '-password')
+		.populate('student')
 		.populate('course')
 		// .populate({path: 'course', populate: {path: 'lessons'}})
 		.exec((err, enrol) => {
@@ -38,6 +38,7 @@ module.exports = {
 	},
     
     async findEnrollment(req, res, next){
+		console.log(req.user);
 		const found = await Enrol.find({course: req.course._id, student: req.user._id});
 		console.log('findEnrollment', found)
 		if(!found.length){
