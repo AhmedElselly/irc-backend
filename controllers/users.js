@@ -142,6 +142,9 @@ module.exports = {
 
         console.log(user)
 
+        if(req.body.password){
+            await user.setPassword(req.body.password);
+        }
 
         user.save((err, user) => {
             if(err) return res.status(401).json({err});
