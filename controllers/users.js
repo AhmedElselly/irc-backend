@@ -166,8 +166,11 @@ module.exports = {
     async removeUser(req, res){
         const user = await User.findById(req.params.userId1);
         console.log('user to delete', user)
+        const assignments = await Post.find({_id: req.params.userId1});
+        console.log('assignments', assignments)
         user.remove((err, user) => {
             if(err) return res.status(400).json({err});
+            assignments.remove();
             return res.json({message: 'User deleted!'});
         })
     }
