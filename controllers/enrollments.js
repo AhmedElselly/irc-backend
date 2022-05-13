@@ -39,7 +39,7 @@ module.exports = {
     
     async findEnrollment(req, res, next){
 		const found = await Enrol.find({course: req.course._id, student: req.user._id});
-		console.log('findEnrollment')
+		console.log('findEnrollment', found)
 		if(!found.length){
 			return res.json({message: "You haven't enrolled to this course yet!"});
 		} else {
