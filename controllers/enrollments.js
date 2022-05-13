@@ -39,6 +39,8 @@ module.exports = {
     
     async findEnrollment(req, res, next){
 		console.log(req.user);
+		const user = await User.findById(req.user._id);
+		if(!user || user === 'null') return res.json({message: "please logout and signin again"});
 		const found = await Enrol.find({course: req.course._id, student: req.user._id});
 		console.log('findEnrollment', found)
 		if(!found.length){
