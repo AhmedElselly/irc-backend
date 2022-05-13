@@ -1,4 +1,5 @@
 const Course = require('../models/course');
+const Enrol = require('../models/enrollment');
 const cloudinary = require('../cloudinary');
 
 module.exports = {
@@ -81,6 +82,8 @@ module.exports = {
 
     async courseRemove(req, res) {
         const course = await req.course;
+        const enrol = await Enrol.deleteMany({course: req.course});
+        console.log('enrol', enrol)
         course.remove((err, course) => {
             if(err) return res.status(400).json({err});
             return res.json({message: 'Course removed successfully'});
