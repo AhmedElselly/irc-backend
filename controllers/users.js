@@ -37,6 +37,7 @@ module.exports = {
 
     async checkUserPurchase(req, res, next){
         const user = await User.findOne({email: req.body.email});
+        if(!user || user === 'null') return res.status(400).json({error: 'User with that email not found!'});
         if(user.status === 'Purchased'){
             next();
         } else {
