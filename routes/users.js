@@ -17,7 +17,8 @@ const {
     updateUserStatus,
     checkUserPurchase,
     foundUser,
-    removeUser
+    removeUser,
+    getUserImage
 } = require('../controllers/users');
 const { isAdmin, isAuth} = require('../middlewares');
 
@@ -32,7 +33,9 @@ router.get('/schools', getSchools);
 router.get('/statuses', getUserStatus);
 router.put('/statuses/:userId1/update/:userId',  isAdmin, updateUserStatus);
 router.delete('/statuses/:userId1/remove/:userId',  isAdmin, removeUser);
+router.get('/user/image/:userId', getUserImage);
 router.get('/', getUsers);
+
 
 router.param('userId', getUserById);
 

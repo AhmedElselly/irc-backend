@@ -30,7 +30,7 @@ module.exports = {
     },
 
     async getPost(req, res) {
-        const post = await Post.findById(req.post._id)
+        const post = await Post.find(req.post._id)
             .populate('user')
             .select('-image');
         return res.json(post);
@@ -71,9 +71,10 @@ module.exports = {
     },
 
     async allPosts(req, res){
-        const posts = await Post.find()
-            .populate('user')
-            .select('-image');
-        return res.json(posts);
+        const posts = await Post.distinct('user');
+            
+        const users = await User.find({_id: {$in: posts}});
+        console.log(users)
+        return res.json(users);
     }
 }

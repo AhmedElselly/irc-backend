@@ -179,5 +179,10 @@ module.exports = {
             
             return res.json({message: 'User deleted!'});
         })
+    },
+
+    getUserImage(req, res){
+        res.set('Content-Type', req.user.image.contentType);
+        return res.send(req.user.image.data);
     }
 }
