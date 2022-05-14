@@ -18,12 +18,13 @@ const {
     checkUserPurchase,
     foundUser,
     removeUser,
-    getUserImage
+    getUserImage,
+    updatePassword
 } = require('../controllers/users');
 const { isAdmin, isAuth} = require('../middlewares');
 
 
-router.put('/student/:_id/edit/:userId',  isAdmin, upload.single('image'), updateStudent);
+router.put('/student/:_id/edit/:userId', isAdmin, upload.single('image'), updateStudent);
 router.get('/student/:_id', getUser);
 router.post('/register', foundUser, register);
 router.post('/login', checkUserPurchase, login);
@@ -34,6 +35,7 @@ router.get('/statuses', getUserStatus);
 router.put('/statuses/:userId1/update/:userId',  isAdmin, updateUserStatus);
 router.delete('/statuses/:userId1/remove/:userId',  isAdmin, removeUser);
 router.get('/user/image/:userId', getUserImage);
+router.put('/user/change-password/:userId', updatePassword);
 router.get('/', getUsers);
 
 

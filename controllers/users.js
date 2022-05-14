@@ -168,6 +168,20 @@ module.exports = {
         });
     },
 
+    async updatePassword(req, res){
+        const user = await req.user;
+        if(!user) return res.status(400).json({error: 'User is not authenticated!'});
+        user.changePassword(req.body.oldPassword, req.body.newPassword, (err, user) => {
+            if(err) return res.status(400).json({error: 'Old password is not correct'})
+            if(user) {
+                return res.json({message: 'Password changed successfully'});
+            } 
+        });
+
+        
+        
+    },
+
     async removeUser(req, res){
         const user = await User.findById(req.params.userId1);
         // console.log('user to delete', user)
