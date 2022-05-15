@@ -18,7 +18,6 @@ module.exports = {
 
     async create(req, res) {
 		const student = await User.findOne({email: req.body.email});
-		console.log('student', student._id)
 		if(!student) return res.status(400).json({error: 'No such student with such email found!'});
 		const foundEnrolled = await Enrol.findOne({course: req.course,student: student._id});
 		console.log('found enrollment', foundEnrolled)
