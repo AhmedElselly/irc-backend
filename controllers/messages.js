@@ -35,7 +35,6 @@ module.exports = {
 
     async updateReadMessage(req, res, next){
         const message = await Message.findOneAndUpdate({_id: req.message._id}, {read: req.body.read}, {new: true});
-        console.log(message)
         // message.read = await req.body.read;
         message.save((err, message) => {
             if(err) return res.status(400).json({err});

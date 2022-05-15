@@ -20,7 +20,6 @@ module.exports = {
 		const student = await User.findOne({email: req.body.email});
 		if(!student) return res.status(400).json({error: 'No such student with such email found!'});
 		const foundEnrolled = await Enrol.findOne({course: req.course,student: student._id});
-		console.log('found enrollment', foundEnrolled)
 		if(foundEnrolled) return res.status(400).json({error: 'User already enrolled into that course!'});
         const enrol = await new Enrol(req.body);
         enrol.course = await req.course;
@@ -41,11 +40,9 @@ module.exports = {
 	},
     
     async findEnrollment(req, res, next){
-		console.log(req.user);
 		const user = await req.user;
 		if(!user || user === 'null') return res.json({message: "please logout and signin again"});
 		const found = await Enrol.find({course: req.course._id, student: req.user._id});
-		console.log('findEnrollment', found)
 		if(!found.length){
 			return res.json({message: "You haven't enrolled to this course yet!"});
 		} else {

@@ -19,7 +19,6 @@ module.exports = {
         await user.setPassword(req.body.password);
 
         user.save((err, user) => {
-            console.log(err)
             if(err) return res.json(400).json({err});
             return res.json(user);
         })
@@ -53,7 +52,6 @@ module.exports = {
     },
 
     async addNewUser(req, res){
-        console.log(req.user)
         // myilsayncvsjctnm
         // zpslkjtnxiqionuo
         const foundUser = await User.findOne({email: req.body.email});
@@ -77,7 +75,6 @@ module.exports = {
            
             
             
-            console.log('user', user)
             user.save(async (err, user) => {
                 if(err) return res.status(400).json({err});
                 let transporter = nodemailer.createTransport({
@@ -99,15 +96,15 @@ module.exports = {
                     html: `<b>Welcome to IRCBloq your login credentials are >> </b> your email: ${user.email}, your username: ${user.name} and your password: ${req.body.password}`, // html body
                 });
 
-                console.log("Message sent: %s", info.messageId);
+                // console.log("Message sent: %s", info.messageId);
                 // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
                 // Preview only available when sending through an Ethereal account
-                console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+                // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
                 return res.json({message: 'User successfully added!'});
             })
         } catch(err){
-            console.log(err)
+            // console.log(err)
             return res.status(400).json({err: 'Something went wrong'})
         }
     },
@@ -129,7 +126,7 @@ module.exports = {
 
     async getUser(req, res){
         const user = await User.findById(req.params._id);
-        console.log(user)
+        // console.log(user)
         return res.json(user);
     },
 
@@ -169,7 +166,7 @@ module.exports = {
             user.image.contentType = req.file.mimetype;
         }
 
-        console.log(user)
+        // console.log(user)
 
         if(req.body.password){
             await user.setPassword(req.body.password);

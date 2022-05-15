@@ -37,8 +37,6 @@ module.exports = {
     },
 
     async createImage(req, res){
-        console.log(req.body);
-        console.log(req.file);
         const post = await new Post(req.body);
         // const image = Buffer.from(req.body.image, 'utf8');
         // post.image.data = await image.toString('base64');
@@ -50,7 +48,6 @@ module.exports = {
         }
         
         post.user = req.user;
-        console.log(post);
         post.save((err, post) => {
             if(err) return res.status(400).json({error: 'something went wrong'});
             return res.json({message: 'Image sent successfully!'});
@@ -65,7 +62,6 @@ module.exports = {
     },
 
     getPostImage(req, res){
-        console.log(req.post)
         res.set('Content-Type', req.post.image.contentType);
         return res.send(req.post.image.data);
     },
@@ -74,7 +70,6 @@ module.exports = {
         const posts = await Post.distinct('user');
             
         const users = await User.find({_id: {$in: posts}});
-        console.log(users)
         return res.json(users);
     }
 }

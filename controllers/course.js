@@ -14,13 +14,10 @@ module.exports = {
         req.body.programMode = req.body.programMode.split(',');
         req.body.programLanguage = req.body.programLanguage.split(',');
         const course = await new Course(req.body);
-        console.log(req.file)
-        console.log(req.body)
         
         // for(let item of req.body.programMode.split(',')) {
         //     course.programMode.push(item);
         // }
-        console.log(course)
         if(req.file){
             course.image.url = req.file.path;            
         }
@@ -48,8 +45,6 @@ module.exports = {
         }
         
         const course = await req.course;
-        console.log(req.body.programLanguage)
-        console.log(req.body.programMode)
         course.name = req.body.name;
         course.helpLink = req.body.helpLink;
         course.learnMore = req.body.learnMore;
@@ -69,7 +64,6 @@ module.exports = {
         course.programMode = req.body.programMode;
         course.programLanguage = req.body.programLanguage;
 
-        console.log(course)
 
         if(req.file) {
             course.image.data = req.file.path;
@@ -83,7 +77,6 @@ module.exports = {
     async courseRemove(req, res) {
         const course = await req.course;
         const enrol = await Enrol.deleteMany({course: req.course});
-        console.log('enrol', enrol)
         course.remove((err, course) => {
             if(err) return res.status(400).json({err});
             return res.json({message: 'Course removed successfully'});
