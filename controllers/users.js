@@ -53,10 +53,11 @@ module.exports = {
     },
 
     async addNewUser(req, res){
-        console.log(req.body)
+        console.log(req.user)
         // myilsayncvsjctnm
         // zpslkjtnxiqionuo
-
+        const foundUser = await User.findOne({email: req.body.email});
+        if(foundUser) return res.status(400).json({error: 'User with that email already exists!'});
         try{
             const user = await new User(req.body);
             if(req.body.role === 'student'){
