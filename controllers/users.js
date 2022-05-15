@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const Post = require('../models/post');
 const jwt = require('jsonwebtoken');
+const nodemailer = require("nodemailer");
 
 module.exports = {
     getUserById(req, res, next, id){
@@ -53,7 +54,9 @@ module.exports = {
 
     async addNewUser(req, res){
         console.log(req.body)
-        
+        // myilsayncvsjctnm
+        // zpslkjtnxiqionuo
+
         try{
             const user = await new User(req.body);
             if(req.body.role === 'student'){
@@ -74,8 +77,32 @@ module.exports = {
             
             
             console.log('user', user)
-            user.save((err, user) => {
+            user.save(async (err, user) => {
                 if(err) return res.status(400).json({err});
+                let transporter = nodemailer.createTransport({
+                    host: "smtp.ethereal.email",
+                    service: 'gmail',
+                    port: 465,
+                    secure: true, // true for 465, false for other ports
+                    auth: {
+                      user: 'ahmedelselly87@gmail.com', // generated ethereal user
+                      pass: 'zpslkjtnxiqionuo', // generated ethereal password
+                    },
+                  });
+                // send mail with defined transport object
+                let info = await transporter.sendMail({
+                    from: `${req.user.email}`, // sender address
+                    to: user.email, // list of receivers
+                    subject: "IRCBloq", // Subject line
+                    text: "Confirm login to IRCBloq", // plain text body
+                    html: `<b>Welcome to IRCBloq your login credentials are >> </b> your email: ${user.email}, your username: ${user.name} and your password: ${req.body.password}`, // html body
+                });
+
+                console.log("Message sent: %s", info.messageId);
+                // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+                // Preview only available when sending through an Ethereal account
+                console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
                 return res.json({message: 'User successfully added!'});
             })
         } catch(err){
