@@ -67,7 +67,13 @@ const userSchema = new Schema({
 		type: String,
 		default: 'Not purchased',
 		enum: ['Not purchased', 'Purchased', 'Cancelled']
-	}
+	},
+    students: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ]
 }, {
     timestamps: true
 });

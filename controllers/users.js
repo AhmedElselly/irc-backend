@@ -60,6 +60,11 @@ module.exports = {
             const user = await new User(req.body);
             if(req.body.role === 'student'){
                 user.student = true;
+                const school = await User.findOne({name: req.body.schoolName, school: true});
+                console.log('school', school)
+                if(!school) return res.status(400).json({error: 'No school with that name'});
+                school.students.push(user);
+                await school.save();
             }
             if(req.body.role === 'school'){
                 user.school = true;
@@ -125,7 +130,9 @@ module.exports = {
     },
 
     async getUser(req, res){
-        const user = await User.findById(req.params._id);
+        const user = await User.findById(req.params._id)
+            .populate('students')
+            .select('-image');
         // console.log(user)
         return res.json(user);
     },
@@ -149,6 +156,10 @@ module.exports = {
             user.student = true;
             user.school = false;
             user.admin = false;
+            const school = await User.findOne({name: req.body.schoolName});
+            if(!school) return res.status(400).json({error: 'No school with that name'});
+            school.students.push(user);
+            await school.save();
         }
         if(req.body.role === 'school'){
             user.school = true;
@@ -202,9 +213,6 @@ module.exports = {
                 return res.json({message: 'Password changed successfully'});
             } 
         });
-
-        
-        
     },
 
     async removeUser(req, res){
@@ -212,7 +220,10 @@ module.exports = {
         // console.log('user to delete', user)
         const posts = await Post.deleteMany({user: req.params.userId1});
         // console.log('posts', posts)
-       
+        const school = await User.findOneAndUpdate({name: user.schoolName}, {
+            $pull: user._id
+        });
+
         user.remove((err, user) => {
             if(err) return res.status(400).json({err});
             
