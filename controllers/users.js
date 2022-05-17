@@ -115,17 +115,17 @@ module.exports = {
     },
 
     async getUsers(req, res){
-        const users = await User.find();
+        const users = await User.find().select('-image -students -data');
         return res.json(users);
     },
 
     async getStudents(req, res){
-        const users = await User.find({student: true});
+        const users = await User.find({student: true}).select('-image -students -data');
         return res.json(users);
     },
 
     async getSchools(req, res){
-        const users = await User.find({school: true});
+        const users = await User.find({school: true}).select('-image -students -data');
         return res.json(users);
     },
 
