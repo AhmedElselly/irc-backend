@@ -56,6 +56,7 @@ module.exports = {
 
     async getStudentPosts(req, res){
         const posts = await Post.find({user: req.user})
+            .sort({'_id': -1})
             .populate('user')
             .select('-image');
         return res.json(posts);
