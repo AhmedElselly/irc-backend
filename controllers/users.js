@@ -54,8 +54,10 @@ module.exports = {
     async addNewUser(req, res){
         // myilsayncvsjctnm
         // zpslkjtnxiqionuo
-        const foundUser = await User.findOne({email: req.body.email});
-        if(foundUser) return res.status(400).json({error: 'User with that email already exists!'});
+        const foundUserEmail = await User.findOne({email: req.body.email});
+        const foundUserName = await User.findOne({name: req.body.name});
+        if(foundUserEmail) return res.status(400).json({error: 'User with that email already exists!'});
+        if(foundUserName) return res.status(400).json({error: 'User with that name already exists!'});
         try{
             const user = await new User(req.body);
             if(req.body.role === 'student'){
