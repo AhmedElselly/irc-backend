@@ -73,7 +73,9 @@ const userSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'User'
         }
-    ]
+    ],
+    resetPasswordToken: String,
+    resetPasswordExpires: Date    
 }, {
     timestamps: true
 });

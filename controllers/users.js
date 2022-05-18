@@ -2,6 +2,7 @@ const User = require('../models/user');
 const Post = require('../models/post');
 const jwt = require('jsonwebtoken');
 const nodemailer = require("nodemailer");
+const crypto = require('crypto');
 
 module.exports = {
     getUserById(req, res, next, id){
@@ -236,5 +237,64 @@ module.exports = {
     getUserImage(req, res){
         res.set('Content-Type', req.user.image.contentType);
         return res.send(req.user.image.data);
-    }
+    },
+
+    async putForgetPassword(req, res){
+        const token = await crypto.randomBytes(20).toString('hex');
+        const user = await User.findOne({email: req.body.email});
+        if(!user){
+            return res.status(400).json({error: "No user with such email!"});
+        }
+        user.resetPasswordToken = token;
+        user.resetPasswordExpires = Date.now() + 3600000;
+        user.save(async (err, user) => {
+            if(err) return res.status(400).json({err});
+            let transporter = nodemailer.createTransport({
+                host: "smtp.ethereal.email",
+                service: 'gmail',
+                port: 465,
+                secure: true, // true for 465, false for other ports
+                auth: {
+                    user: 'irobochakrabloq@gmail.com', // generated ethereal user
+                    pass: 'zzshbnhdhcskfjyv', // generated ethereal password
+                },
+                });
+            // send mail with defined transport object
+            let info = await transporter.sendMail({
+                from: `irobochakrabloq@gmail.com`, // sender address
+                to: user.email, // list of receivers
+                subject: "IRCBloq - Reset Password", // Subject line
+                text: "Confirm login to IRCBloq", // plain text body
+                html: `<p>You are receiving this because you have requested the reset of the password of your account</p>.<b>Please click on the following link, or copy and paste it into your browser to complete the process: https://irc-dashboard.herokuapp.com/reset/${token}</b>. If you didn't request this, please ignore this email and your password will remaine unchanged.`, 
+            });
+            
+            return res.json({message: `An email has been sent to ${user.email} with further instructions`});
+        })
+    },
+
+    async getReset(req, res){
+        const {token} = req.params;
+        const user = await User.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpires: {$gt: Date.now()}
+        });
+        if(!user) return res.status(400).json({error: 'Password reset token is invalid or expired'});
+        return res.json(user);
+    },
+
+    async putReset(req, res){
+        const {token} = req.params;
+        const user = await User.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpires: {$gt: Date.now()}
+        });
+        if(!user) return res.status(400).json({error: 'Password reset token is invalid or expired'});
+        await user.setPassword(req.body.password);
+        user.resetPasswordToken = null;
+        user.resetPasswordExpires = null;
+        user.save((err, user) => {
+            if(err) return res.status(400).json({err});
+            return res.json({message: 'Password changed successfully'});
+        })
+    },
 }

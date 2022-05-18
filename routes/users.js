@@ -19,7 +19,10 @@ const {
     foundUser,
     removeUser,
     getUserImage,
-    updatePassword
+    updatePassword,
+    putForgetPassword,
+    getReset,
+    putReset
 } = require('../controllers/users');
 const { isAdmin, isAuth} = require('../middlewares');
 
@@ -36,6 +39,9 @@ router.put('/statuses/:userId1/update/:userId',  isAdmin, updateUserStatus);
 router.delete('/statuses/:userId1/remove/:userId',  isAdmin, removeUser);
 router.get('/user/image/:userId', getUserImage);
 router.put('/user/change-password/:userId', updatePassword);
+router.put('/user/forgot-password', putForgetPassword);
+router.get('/user/reset/:token', getReset);
+router.put('/user/reset/:token', putReset);
 router.get('/', getUsers);
 
 
