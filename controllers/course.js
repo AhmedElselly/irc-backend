@@ -10,14 +10,13 @@ module.exports = {
             next();
         });
     },
+
+    // create a course (device)
     async create(req, res){
         req.body.programMode = req.body.programMode.split(',');
         req.body.programLanguage = req.body.programLanguage.split(',');
         const course = await new Course(req.body);
         
-        // for(let item of req.body.programMode.split(',')) {
-        //     course.programMode.push(item);
-        // }
         if(req.file){
             course.image.url = req.file.path;            
         }
@@ -28,16 +27,19 @@ module.exports = {
         });
     },
 
+    // getting all devices
     async courseIndex(req, res){
         const courses = await Course.find();
         return res.json(courses);
     },
 
+    // get course by ID
     async getCourse(req, res){
         const course = await Course.findById(req.course._id);
         return res.json(course);
     },
 
+    // update device 
     async courseUpdate(req, res){
         if(req.body.programLanguage || req.body.programMode){
             req.body.programMode = req.body.programMode.split(',');
@@ -74,6 +76,7 @@ module.exports = {
         });
     },
 
+    // remove device
     async courseRemove(req, res) {
         const course = await req.course;
         const enrol = await Enrol.deleteMany({course: req.course});
@@ -83,6 +86,7 @@ module.exports = {
         })
     },
 
+    // get device image
     getCourseImage(req, res) {
         res.set('Content-Type', req.course.image.contentType);
         return res.send(req.course.image.data);

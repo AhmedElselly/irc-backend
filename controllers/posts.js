@@ -10,6 +10,8 @@ module.exports = {
             next();
         });
     },
+
+    // for creating marks for each found student in the excel sheet
     async create(req, res) {
         try {
             // console.log(req.body);
@@ -29,6 +31,7 @@ module.exports = {
         }
     },
 
+    // getting an assignment by ID
     async getPost(req, res) {
         const post = await Post.find(req.post._id)
             .populate('user')
@@ -36,11 +39,9 @@ module.exports = {
         return res.json(post);
     },
 
+    // creating an assignment along with it's title
     async createImage(req, res){
         const post = await new Post(req.body);
-        // const image = Buffer.from(req.body.image, 'utf8');
-        // post.image.data = await image.toString('base64');
-        // post.image.contentType = 'image/jpeg';
 
         if(req.file){
             post.image.data = req.file.buffer;
@@ -54,6 +55,7 @@ module.exports = {
         })
     },
 
+    // get students assignments
     async getStudentPosts(req, res){
         const posts = await Post.find({user: req.user})
             .sort({'_id': -1})
@@ -62,11 +64,13 @@ module.exports = {
         return res.json(posts);
     },
 
+    // getting assingment's image
     getPostImage(req, res){
         res.set('Content-Type', req.post.image.contentType);
         return res.send(req.post.image.data);
     },
 
+    // getting all assignments
     async allPosts(req, res){
         const posts = await Post.distinct('user');
             

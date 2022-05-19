@@ -16,6 +16,7 @@ module.exports = {
 		});
 	},
 
+	// create an enrollment
     async create(req, res) {
 		const student = await User.findOne({email: req.body.email});
 		if(!student) return res.status(400).json({error: 'No such student with such email found!'});
