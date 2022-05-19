@@ -19,12 +19,22 @@ const {
 
 const { isAuth } = require('../middlewares');
 
-
+// creating an marks for every student in the list of excel sheet
 router.post('/create', create);
+
+// creating assingment for each student
 router.post('/create/image/:userId', isAuth, upload.single('image'), createImage);
+
+// getting student assignments
 router.get('/post/:userId/assignments', getStudentPosts);
+
+// getting an assignment image
 router.get('/image/:postId', getPostImage);
+
+// getting full assingment
 router.get('/post/:postId', getPost);
+
+// getting all assingments
 router.get('/', allPosts);
 
 

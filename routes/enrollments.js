@@ -24,10 +24,16 @@ const {
 
 const { isAdmin } = require('../middlewares');
 
-
+// adding new enrollment
 router.post('/new/:courseId/:userId', isAdmin, create);
+
+// listing enrollments for student to show what he enrolled for
 router.get('/learn-list/:userId', listByStudent);
+
+// removing an enrollment for student
 router.delete('/remove/:userId/:enrolId', removeEnrol);
+
+// finding an enrollment
 router.get('/read/:courseId/:userId', findEnrollment, read);
 
 

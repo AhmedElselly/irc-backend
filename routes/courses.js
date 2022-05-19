@@ -20,11 +20,22 @@ const {
 
 const { isAdmin } = require('../middlewares');
 
+// creating a course (device)
 router.post('/create/:userId', isAdmin, upload.single('image'), create);
+
+// getting a course
 router.get('/course/:courseId', getCourse);
+
+// getting course image
 router.get('/course/:courseId/image', getCourseImage);
+
+// updating the course
 router.put('/course/:courseId/update/:userId', isAdmin, upload.single('image'), courseUpdate);
+
+// deleting the course
 router.delete('/course/:courseId/remove/:userId', isAdmin, courseRemove);
+
+// get all courses
 router.get('/', courseIndex);
 
 router.param('courseId', getCourseById);
