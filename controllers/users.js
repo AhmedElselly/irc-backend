@@ -32,8 +32,8 @@ module.exports = {
         if(err || !user) return res.status(400).json({error: 'email and password do not match!'});
         const {_id, email, username} = user;
         const token = await jwt.sign({_id, email, username}, process.env.SECRETKEY);
-
-        return res.json({token, user});
+        const loggedInUser = await User.findById(user._id).select('-image');
+        return res.json({token, user: loggedInUser});
     },
 
     async checkUserPurchase(req, res, next){
