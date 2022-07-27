@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://164.92.145.200']
+    origin: '*'
 }));
 app.use(helmet());
 app.use(session({
