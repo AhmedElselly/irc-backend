@@ -5,7 +5,6 @@ module.exports = {
     isAuth(req, res, next){
         try{
             const token = req.headers['authorization'].split(' ')[1];
-            console.log(token);
             const user = jwt.verify(token, process.env.SECRETKEY);
             if(user){
                 next();
